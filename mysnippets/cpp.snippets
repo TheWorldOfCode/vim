@@ -1,0 +1,35 @@
+
+snippet main "Defualt main function" iA
+int main() {
+
+   return 0;
+}
+endsnippet
+
+snippet ( "()" iA 
+($1) $0
+endsnippet
+
+snippet { "{}" iA
+{$1} $0
+endsnippet
+
+snippet " "" iA
+"$1" $0
+endsnippet
+
+snippet ' "" iA
+'$1' $0 
+endsnippet
+#snippet < "<>" iA
+#<$1>$0
+#endsnippet
+
+snippet for "for loop" bA
+for($1; $2; $3)
+{
+   $4
+}
+
+$0
+endsnippet

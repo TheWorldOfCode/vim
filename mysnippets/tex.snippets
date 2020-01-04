@@ -1,0 +1,500 @@
+global !p
+texMathZones = ['texMathZone'+x for x in ['A', 'AS', 'B', 'BS', 'C',
+'CS', 'D', 'DS', 'E', 'ES', 'F', 'FS', 'G', 'GS', 'H', 'HS', 'I', 'IS',
+'J', 'JS', 'K', 'KS', 'L', 'LS', 'DS', 'V', 'W', 'X', 'Y', 'Z']]
+
+texIgnoreMathZones = ['texMathText']
+
+texMathZoneIds = vim.eval('map('+str(texMathZones)+", 'hlID(v:val)')")
+texIgnoreMathZoneIds = vim.eval('map('+str(texIgnoreMathZones)+", 'hlID(v:val)')")
+
+ignore = texIgnoreMathZoneIds[0]
+
+def math():
+	synstackids = vim.eval("synstack(line('.'), col('.') - (col('.')>=2 ? 1 : 0))")
+	try:
+		first = next(
+            i for i in reversed(synstackids)
+            if i in texIgnoreMathZoneIds or i in texMathZoneIds
+        )
+		return first != ignore
+	except StopIteration:
+		return False
+endglobal
+
+
+snippet \beg "begin{} / end{}"  bA
+\begin{$1}
+   $2
+\end{$1}
+$0
+endsnippet
+
+snippet \begin{table} "table" b
+\begin{table}
+   \centering
+   \begin{tabular}{$1}
+      $0
+   \end{tabular}
+   \caption{$2}
+   \label{tab:$3}
+\end{table}
+endsnippet
+
+snippet \eq "equation" b
+\begin{equation}
+   \label{$1}
+   $0 
+\end{equation}
+endsnippet
+
+snippet \sec "section" b
+\section{$1}
+endsnippet
+
+snippet \sub "subsection" b
+\subsection{$1}
+endsnippet
+
+snippet \secl "section" b
+\section{$1}
+\label{sec:$0}
+endsnippet
+
+snippet \subl "subsection" b
+\subsection{$1}
+\label{sub:$0}
+endsnippet
+
+snippet \subsub "subsubsection" b
+\subsubsection*{$0}
+endsnippet
+
+snippet csub "Create subfile" b
+\documentclass[$1]{subfiles}
+
+$2
+
+\begin{document}
+
+\section{$3}
+\label{seb:$4}
+
+$0
+
+\end{document}
+endsnippet
+
+snippet notes "preamble of notes in LaTeX" b
+\usepackage{import}
+\usepackage{pdfpages}
+\usepackage{transparent}
+\usepackage{xcolor}
+
+\newcommand{\incfig}[1]{%
+    \def\svgwidth{\columnwidth}
+    \import{./figures/}{#1.pdf_tex}
+}
+\pdfsuppresswarningpagegroup=1
+endsnippet
+
+priority 10
+snippet md "Math display mode" bA
+\[$0\]
+endsnippet
+
+priority 0
+snippet md "Math inline" wA
+$$1$ $0
+endsnippet
+
+snippet ( "()" iA
+($1)$0
+endsnippet
+
+snippet { "{}" iA
+{$1}$0
+endsnippet
+
+snippet [ "" iA
+[$1] $0
+endsnippet
+
+snippet " "" iA
+\`\`$1'' $0
+endsnippet
+
+snippet bf "Bold" wA
+\textbf{$1} $0 
+endsnippet
+
+priority 10
+snippet txtit "Italic" wA
+\textit{$1}$0
+endsnippet
+
+priority 0
+snippet txtit "Italic visual" A
+\textit{${VISUAL}} $0
+endsnippet
+
+
+
+priority 10
+snippet nline "newline" bA
+\newline
+endsnippet
+
+priority 0
+snippet nline "newline inline" wA
+\\\\
+endsnippet
+
+snippet box "framed" bA
+\begin{framed}
+$1
+\end{framed}
+$0
+endsnippet
+
+#priority -10
+#snippet _ "textunderscore" iA
+#\textunderscore $0
+#endsnippet
+priority 10
+context "math()"
+snippet ( "()" iA
+\left($1 \right)$0
+endsnippet
+
+#context "math()"
+#snippet { "{}" iA
+#\left{$1 \right}$0
+#endsnippet
+
+context "math()"
+snippet [ "" iA
+\left[$1 \right] $0
+endsnippet
+
+
+priority 0
+context "math()"
+snippet '\s[<][=]\s' "less or equation to" wrA
+ \leq $0
+endsnippet
+
+context "math()"
+snippet '\s[>][=]\s' "greater then or equation to" wrA
+ \geq $0
+endsnippet
+
+context "math()"
+snippet -> "arrow" wA
+\to $0
+endsnippet
+
+context "math()"
+snippet '\s[=][>]\s' "=>" wrA
+\Rightarrow $0
+endsnippet
+
+snippet '\s[<][=][>]\s' "RightLeftArrow" wrA
+\Rightleftarrow $0
+endsnippet
+
+context "math()"
+snippet or "eller" wA
+\vee
+endsnippet
+
+context "math()" 
+snippet and "og" wA
+\wedge
+endsnippet
+
+context "math()" 
+snippet '[i][n]\s' "the math symbol for in" wrA
+\in $0
+endsnippet
+
+context "math()"
+priority 0
+snippet '([A-Za-z])(\d)' "auto subscript" wrA
+`!p snip.rv = match.group(1)`_`!p snip.rv = match.group(2)`
+endsnippet
+
+context "math()"
+priority 0
+snippet '([A-Za-z])_(\d\d)' "auto subscript2" wrA
+`!p snip.rv = match.group(1)`_{`!p snip.rv = match.group(2)`}
+endsnippet
+
+priority 100
+context "math()"
+snippet '(\d+)/(\d+)\s' "" rA 
+\frac{`!p snip.rv = match.group(1)` }{`!p snip.rv = match.group(2)`}
+endsnippet
+
+priority 0
+context "math()"
+snippet / "fraction" wA
+\\frac{$1}{$2}$0 
+endsnippet
+
+context "math()"
+snippet cd "dots as productoin" wA
+\cdot
+endsnippet
+
+context "math()"
+snippet tms "times" wA 
+\times $0
+endsnippet
+
+context "math()" 
+snippet oplus "The math symbol oplus" wA
+\oplus $0
+endsnippet
+
+context "math()"
+snippet sqrt "Sqrt" wA
+\sqrt{$1}$0
+endsnippet
+
+context "math()"
+priority 0
+snippet '([A-Za-z])_([A-Za-z])' "auto subscript3 " wrA
+`!p snip.rv = match.group(1)`_{`!p snip.rv = match.group(2)`$1}$0
+endsnippet
+
+context "math()"
+priority 0
+snippet sb "subscript" iA
+_$0
+endsnippet
+
+context "math()"
+snippet sr "superscript" iA
+^$0
+endsnippet
+
+context "math()"
+snippet sum "sum" wA
+\sum_{$1}^{$2}$0
+endsnippet
+
+context "math()"
+snippet overset "overset" wA
+\overset{$1}{$2}$0
+endsnippet
+
+context "math()"
+snippet underset "underset" wA
+\underset{$1}$0
+endsnippet
+
+context "math()"
+snippet sideset "sideset" wA
+\sideset{$1}{$2}$0
+endsnippet
+
+context "math()"
+snippet underbrace "underbrace" wA
+\underbrace{$1}$0
+endsnippet
+
+context "math()"
+snippet overbrace "overbrace" wA
+\overbrace{$1}$0
+endsnippet
+
+context "math()"
+snippet hat "hat" wA
+\hat{$1}$0
+endsnippet
+
+context "math()"
+snippet bar "bar" wA
+\bar{$1}$0
+endsnippet
+
+context "math()"
+snippet vector "vector sign" wA
+\overset{\rightharpoonup}{$1}$0
+endsnippet
+
+context "math()"
+snippet '\w+^(\w\w+)\s' "superscript2" irA
+^{`!p snip.rv = match.group(1)`} $0
+endsnippet
+
+context "math()"
+snippet text "Write normale text in math" wA
+\text{$1}$0
+endsnippet
+
+context "math()"
+snippet infty "Make the infty symbol in math" wA
+\infty $0
+endsnippet
+
+context "math()"
+snippet partial "partial" wA
+\partial $0
+endsnippet
+
+context "math()"
+snippet mu " Math symbol for mu" wA
+\mu$0
+endsnippet
+
+context "math()"
+snippet sigma "Math symbol for sigma" wA
+\sigma$0
+endsnippet
+
+context "math()"
+snippet pi "Math symbol for pi" wA
+\pi$0
+endsnippet
+
+context "math()"
+snippet lambda "Math symbol for lambda" wA
+\lambda$0
+endsnippet
+
+context "math()"
+snippet Delta "Delta" wA
+\Delta$0
+endsnippet
+
+context "math()"
+snippet delta "delta" wA
+\delta$0
+endsnippet
+
+context "math()"
+snippet alpha "alpha" wA
+\alpha$0
+endsnippet
+
+context "math()"
+snippet Alpha "Alpha" wA
+\Alpha$0
+endsnippet
+
+context "math()"
+snippet Beta "Beta" wA
+\Beta$0
+endsnippet
+
+context "math()"
+snippet beta "beta" wA
+\beta$0
+endsnippet
+
+context "math()"
+snippet gamma "gamma" wA
+\gamma$0
+endsnippet
+
+context "math()"
+snippet Gamma "Gamma" wA
+\Gamma$0
+endsnippet
+
+context "math()"
+snippet zeta "zeta" wA 
+\zeta$0
+endsnippet
+
+context "math()"
+snippet nabla "nabla" wA
+\nabla$0
+endsnippet
+
+context "math()
+snippet theta "theta" wA
+\theta$0
+endsnippet
+
+context "math()
+snippet Theta "Theta" wA
+\Theta$0
+endsnippet
+
+context "math()"
+snippet Phi "Phi" wA
+\Phi$0
+endsnippet
+
+context "math()"
+snippet phi "Phi" wA
+\phi$0
+endsnippet
+
+context "math()"
+snippet rho "rho" wA
+\rho$0
+endsnippet
+
+context "math()"
+snippet Rho "rho" wA
+\Rho$0
+endsnippet
+
+context "math()"
+snippet epsilon "epsilon" wA
+\epsilon$0
+endsnippet
+
+context "math()"
+snippet tau "tau" wA
+\tau$0
+endsnippet
+
+context "math()"
+snippet forall "forall" wA
+\forall
+endsnippet
+
+context "math()"
+snippet exists "exists" wA
+\exists
+endsnippet
+
+context "math()"
+snippet subset "The symbol for subsets" wA
+\subset $0
+endsnippet
+
+context "math()" 
+snippet supset "The symbol for superset" wA
+\supset $0
+endsnippet
+
+context "math()"
+snippet cap "cap" wA
+\cap
+endsnippet
+
+context "math()"
+snippet cup "cup" wA
+\cup
+endsnippet
+
+context "math()"
+snippet sim "sim" wA
+ \sim $0
+endsnippet
+
+context "math()" 
+snippet mrm "math style rm" wA
+\mathrm{$1}$0
+endsnippet
+
+context "math()"
+snippet mcal "math style cal" wA
+\mathcal{$1}$0
+endsnippet
