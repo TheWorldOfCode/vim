@@ -63,6 +63,7 @@ let g:vimtex_compiler_latexmk = {
 			\   '-file-line-error',
 			\   '-synctex=1',
 			\   '-interaction=nonstopmode',
+			\   '-shell-escape',
 			\ ],
 			\}
 
@@ -263,7 +264,6 @@ highlight BadWhitespace ctermfg=0 ctermbg=226
 au BufNewFile,BufRead *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 
 " Source vim scripts
-source ~/.vim/functions/git.vim
 source ~/.vim/functions/vim_setting.vim 
 
 
@@ -272,34 +272,6 @@ au BufEnter <buffer> call Vim_setting_set_in_file()
 nmap <silent> <C-j> :tabprevious <CR>
 nmap <silent> <C-k> :tabnext <CR>
 
+" Source Status line
+source ~/.vim/statusline.vim
 
-" Creating my own status line
-set statusline =  
-"if b:GitInRepository == 1 
-"	set statusline+=%#PmenuSel#
-set statusline+=%{Git_statusline_current_branch()}  
-"	set statusline+=%#LineNr#
-"	set statusline+=\ %f  "File path
-"else
-set statusline+=%#LineNr#
-set statusline+=%f  "File path
-"endif
-
-set statusline+=%m "Modified flag	
-set statusline+=%r "Read only flag. 
-set statusline+=%h "help buffer flag.
-set statusline+=%w "Preview window flag
-set statusline+=%y "Type of file
-
-set statusline+=%= "Moving the cursor the the other side
-
-set statusline+=\ Buf:%n "buffer number
-set statusline+=\ %{Git_statusline_file_tracked()}
-"if b:GitInRepository == 1
-
-"	set statusline+=\ Track:%{b:GitFileTracked}
-
-"endif
-
-set statusline+=\ %l:%c " Line number:Column number
-set statusline+=\ %p%% "Pecentage through file
