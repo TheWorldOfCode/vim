@@ -1,0 +1,49 @@
+
+snippet book "Template for books" bA
+@book{${1:label},
+    author     = "${2:Author}",
+    title      = "${3:Title}",
+    publisher  = "${4:Publisher}",
+    ?_volume   = "${5:volume}",
+    ?_number   = "${6:number}",
+    ?_series   = "${7:Series}",
+    ?_pages    = "${8:Pages}",
+    year       = "${9:Year}",
+    address    = "${10:address}",
+    ?_edition  = "${11:Edition}",
+    ?_month    = "${12:Month}",
+    ?_note     = "${13:note}",
+    ISBN       = "${14:ISBN}",
+}
+$0
+endsnippet
+
+snippet article "Template for article" bA
+@article{${1:label},
+    author     = "${2:author}",
+    title      = "${3:title}",
+    journal    = "${4:journal}",
+    ?_volume   = "${5:volume}",
+    ?_number   = "${6:number}",
+    ?_pages    = "${7:Pages}",
+    year       = "${8:Year}",
+    ?_month    = "${9:Month}",
+    ?_note     = "${10:note}",
+}
+$0
+endsnippet
+snippet INPROCEEDINGS "Template for INPROCEEDINGS" bA
+@INPROCEEDINGS{${1:label},
+    author     = "${2:author}", 
+    booktitle  = "${3:booktitle}", 
+    title      = "${4:title}", 
+    year       = "${5:year}", 
+    volume     = "${6:volume}", 
+    number     = "${7:number}", 
+    pages      = "${8:pages}", 
+    keywords   = "${9:keywords}", 
+    ISSN       = "${10:ISSN}", 
+    month      = "${11:month}",
+}
+$0
+endsnippet

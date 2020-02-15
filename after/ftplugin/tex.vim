@@ -9,7 +9,3 @@ nnoremap <buffer> <C-f> : silent exec '!inkscape-figures edit "'.b:vimtex.root.'
     
 
 
-" Spelling danish 
-set spell
-
-setlocal spell spelllang=da

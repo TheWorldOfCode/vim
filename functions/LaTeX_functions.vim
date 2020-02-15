@@ -5,7 +5,7 @@ function! SnapShot(dir, filename)
 		echom "The file exists already."
 	else 
 		silent execute '!gnome-screenshot -a -f ' file 
-		put = '\begin{figure}[h]'
+		put = '\begin{figure}[H]'
 		put = '  \centering'
 		put = '  \includegraphics[width=\textwidth]{' . file . '}'
 		put = '\end{figure}'
