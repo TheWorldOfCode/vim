@@ -85,6 +85,31 @@ $0
 \end{document}
 endsnippet
 
+snippet template_defualt "Defualt latex doc"
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[danish]{babel}
+\usepackage{amsmath}
+\usepackage{framed}
+\usepackage{subfiles}
+\usepackage{float}
+\usepackage{import}
+\usepackage{pdfpages}
+\usepackage{transparent}
+\usepackage{xcolor}
+
+\newcommand{\incfig}[1]{%
+    \def\svgwidth{\columnwidth}
+    \import{./figures/}{#1.pdf_tex}
+}
+\usepackage{graphicx}
+\pdfsuppresswarningpagegroup=1
+
+\begin{document}
+$1
+\end{document}
+endsnippet
 snippet notes "preamble of notes in LaTeX" b
 \usepackage{import}
 \usepackage{pdfpages}
@@ -108,17 +133,17 @@ snippet md "Math inline" wA
 $$1$ $0
 endsnippet
 
-snippet ( "()" iA
-($1)$0
-endsnippet
+#snippet ( "()" iA
+#($1)$0
+#endsnippet
 
-snippet { "{}" iA
-{$1}$0
-endsnippet
+#snippet { "{}" iA
+#{$1}$0
+#endsnippet
 
-snippet [ "" iA
-[$1] $0
-endsnippet
+#snippet [ "" iA
+#[$1] $0
+#endsnippet
 
 snippet " "" iA
 \`\`$1'' $0

@@ -1,0 +1,41 @@
+global !p
+def split_line(text):
+	import textwrap
+	lines = textwrap.wrap(text, 78 - 19)
+	output = list()
+	for line in lines:
+		output.append('*' + ' '*19 + line)
+	snip_line = snip.tabstops[4].end[0]
+	snip.buffer.append(output, snip_line + 1)
+	del snip.buffer[snip_line]
+def get_args(arglist):
+	args = [arg.strip() for arg in arglist.split(',') if arg]
+	return args
+endglobal
+
+
+snippet func
+/****************************************************
+ * Name: $2                                                  
+ * Description: ${4: What does the function do ?}
+ * Parameters: `!p 
+snip.rv = ""
+snip >> 3
+args = get_args(t[3])
+if args:
+	for arg in args:
+		snip.rv += '\n' + '*' + ' '*19 + arg + ' - TODO'
+snip << 3
+`
+ * Return: ${5: What does the function return ?}
+ * Throws: ${6: Which exception does it throw ?}
+ * Errors: ${7: Current errors}
+ ****************************************************/
+${1:void} ${2:function name}(${3:parameter});
+endsnippet
+
+
+snippet define 
+// ${2:Used for}
+#define ${1:definition}
+endsnippet

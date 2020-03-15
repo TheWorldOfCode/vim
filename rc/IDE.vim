@@ -11,6 +11,10 @@ set wildmenu "command-line completion operates in an enhaced mode. auto-complete
 set wildmode=list "Completion mode that is used for the character specified with 'wildcar'. When more than one match list all matches. 
 set laststatus=2 "Show always a status line. 
 
+set foldmethod=indent   
+set foldnestmax=10
+set nofoldenable
+set foldlevel=2
 
 
 if isdirectory("/tmp/vimbackup") == 0                       " Checking if the backup directory is created
@@ -30,7 +34,7 @@ set showcmd		" display incomplete commands
 set ttimeout		" time out for key codes
 set ttimeoutlen=100	" wait up to 100ms after Esc for special key
 
-set display=truncate    " Show @@@ in the last line if it is truncated.
+"set display=truncate    " Show @@@ in the last line if it is truncated.
 
 " Show a few lines of context around the cursor.  Note that this makes the
 " text scroll if you mouse-click near the start or end of the window.
@@ -196,6 +200,7 @@ endif " has("autocmd")
 " Plug In
 
 call plug#begin('~/.vim/plugged')
+Plug 'flazz/vim-colorschemes'
 
 Plug 'sirver/ultisnips'
 let g:UltiSnipsExpandTrigger = '<tab>'
@@ -220,9 +225,26 @@ Plug 'godlygeek/tabular' " Aline things
 Plug 'gilsondev/searchtasks.vim' " Search for TODO when developing 
 
 Plug 'scrooloose/nerdtree' " NERDtree is a file system explorer
+autocmd VimEnter,TabEnter * :NERDTree 
 
+Plug 'taketwo/vim-ros' " Ros Plugin 
+set shiftwidth=2  " Two space indents
+set tabstop=2     " Tab key indents two spaces at a time
+set expandtab     " Use spaces when the <Tab> key is pressed
+set cindent       " Turn on automatic C-code indentation
+
+
+"Extension for syntax
+Plug 'vim-syntastic/syntastic'
+
+" Allow moving lines without deleting them 
+Plug 'matze/vim-move'
+
+Plug 'majutsushi/tagbar'
+autocmd VimEnter,TabEnter * :Tagbar
 call plug#end()
 
+colorscheme happy_hacking
 
 " Source vim scripts
 source ~/.vim/functions/vim_setting.vim 

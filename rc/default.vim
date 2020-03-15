@@ -38,6 +38,7 @@ set scrolloff=5
 
 " My own adding 
 call plug#begin('~/.vim/plugged')
+Plug 'flazz/vim-colorschemes'
 
 Plug 'lervag/vimtex'
 let g:tex_flavor='latex'
@@ -79,6 +80,7 @@ let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
 let g:ycm_autoclose_preview_window_after_completion=1
 map<leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
 let g:ycm_global_ycm_extra_conf = '~/.vim/plugged/YouCompleteMe/third_party/ycmd/.ycm_extra_conf.py'
+let g:ycm_server_python_interpreter = '/usr/bin/python2'
 
 Plug 'habamax/vim-sendtoterm' " Allow to send lines to terminal 
 
@@ -90,7 +92,19 @@ let g:markdown_minlines = 100
 Plug 'vim-scripts/SyntaxRange'
 
 Plug 'godlygeek/tabular'
+
+"Extension for syntax
+Plug 'vim-syntastic/syntastic'
+
+" Allow moving lines without deleting them 
+Plug 'matze/vim-move'
+
+
+" Auto Close
+Plug 'Townk/vim-autoclose'
 call plug#end()
+
+colorscheme happy_hacking
 
 " When started as "evim", evim.vim will already have done these settings.
 if v:progname =~? "evim"

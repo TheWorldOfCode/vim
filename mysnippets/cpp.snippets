@@ -1,3 +1,17 @@
+global !p
+def split_line(text):
+	import textwrap
+	lines = textwrap.wrap(text, 78 - 19)
+	output = list()
+	for line in lines:
+		output.append('*' + ' '*19 + line)
+	snip_line = snip.tabstops[4].end[0]
+	snip.buffer.append(output, snip_line + 1)
+	del snip.buffer[snip_line]
+def get_args(arglist):
+	args = [arg.strip() for arg in arglist.split(',') if arg]
+	return args
+endglobal
 
 snippet main "Defualt main function" b
 int main() {
@@ -6,30 +20,75 @@ int main() {
 }
 endsnippet
 
-snippet ( "()" iA 
-($1) $0
-endsnippet
-
-snippet { "{}" iA
-{$1} $0
-endsnippet
-
-snippet " "" iA
-"$1" $0
-endsnippet
-
-snippet ' "" iA
-'$1' $0 
-endsnippet
-#snippet < "<>" iA
-#<$1>$0
-#endsnippet
-
-snippet for "for loop" bA
-for($1; $2; $3)
+snippet for "for loop" b
+for(${1:int} ${2:i} = ${3:0}; ${4:condination}; ${5:i++})
 {
-   $4
+   ${6:/* code */}
 }
+endsnippet
 
-$0
+snippet foreach "foreach element in" b
+for( ${1:type} ${2:element} : ${3:list}) 
+{
+    ${4:/* code */}
+}
+endsnippet
+
+
+snippet func
+/****************************************************
+ * Name: $2                                                  
+ * Description: ${4: What does the function do ?}
+ * Parameters: `!p 
+snip.rv = ""
+snip >> 3
+args = get_args(t[3])
+if args:
+	for arg in args:
+		snip.rv += '\n' + '*' + ' '*19 + arg + ' - TODO'
+snip << 3
+`
+ * Return: ${5: What does the function return ?}
+ * Throws: ${6: Which exception does it throw ?}
+ * Errors: ${7: Current errors}
+ ****************************************************/
+${1:void} ${2:function name}(${3:parameter})
+{
+    ${8:/* code */}
+}
+endsnippet
+
+snippet funco
+/****************************************************
+ * Overload of: $2                                                  
+ * Parameters: `!p 
+snip.rv = ""
+snip >> 3
+args = get_args(t[3])
+if args:
+	for arg in args:
+		snip.rv += '\n' + '*' + ' '*19 + arg + ' - TODO'
+snip << 3
+`
+ ****************************************************/
+${1:void} ${2:function name}(${3:parameter})
+{
+    ${4:/* code */}
+}
+endsnippet
+snippet funch
+${1:void} ${2:class}::${3:function}(${4:parameter})
+/*************************************************
+ * See speficiation in the header 
+ *************************************************/
+{
+   ${5:/* code */}
+}
+endsnippet
+
+
+snippet cbox "Create a comment box"
+/***********************************************
+ * $1                                          *
+ ***********************************************/
 endsnippet
