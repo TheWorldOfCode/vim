@@ -82,6 +82,8 @@ map<leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
 let g:ycm_global_ycm_extra_conf = '~/.vim/plugged/YouCompleteMe/third_party/ycmd/.ycm_extra_conf.py'
 let g:ycm_server_python_interpreter = '/usr/bin/python2'
 
+Plug 'rhysd/vim-grammarous'
+
 Plug 'habamax/vim-sendtoterm' " Allow to send lines to terminal 
 
 
