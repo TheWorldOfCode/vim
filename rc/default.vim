@@ -40,28 +40,7 @@ set scrolloff=5
 call plug#begin('~/.vim/plugged')
 Plug 'flazz/vim-colorschemes'
 
-Plug 'lervag/vimtex'
-let g:tex_flavor='latex'
-let g:vimtex_view_method='zathura'
-let g:vimtex_quickfix_mode=0
-set conceallevel=1
-let g:tex_conceal='abdmg'
-let g:vimtex_complete_enabled=1
-let g:vimtex_compiler_latexmk = {
-			\ 'backend' : 'jobs',
-			\ 'background' : 1,
-			\ 'build_dir' : './build',
-			\ 'callback' : 1,
-			\ 'continuous' : 1,
-			\ 'executable' : 'latexmk',
-			\ 'options' : [
-			\   '-verbose',
-			\   '-file-line-error',
-			\   '-synctex=1',
-			\   '-interaction=nonstopmode',
-			\   '-shell-escape',
-			\ ],
-			\}
+Plug 'lervag/vimtex', {'for': 'tex'}
 
 Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
 
@@ -98,12 +77,11 @@ Plug 'godlygeek/tabular'
 "Extension for syntax
 Plug 'vim-syntastic/syntastic'
 
-" Allow moving lines without deleting them 
-Plug 'matze/vim-move'
-
 
 " Auto Close
 Plug 'Townk/vim-autoclose'
+
+Plug 'haya14busa/vim-gtrans'
 call plug#end()
 
 colorscheme happy_hacking
@@ -294,3 +272,19 @@ nmap <silent> <C-k> :tabnext <CR>
 " Source Status line
 source ~/.vim/statusline.vim
 
+let g:vimtex_compiler_latexmk = {
+			\ 'backend' : 'jobs',
+			\ 'background' : 1,
+			\ 'build_dir' : '.',
+			\ 'callback' : 1,
+			\ 'continuous' : 1,
+			\ 'executable' : 'latexmk',
+			\ 'options' : [
+			\   '--verbose',
+			\   '--file-line-error',
+			\   '--synctex=1',
+			\   '--interaction=nonstopmode',
+			\   '--shell-escape',
+                        \   '--bibtex',
+			\ ],
+			\}
