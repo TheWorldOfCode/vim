@@ -17,6 +17,8 @@ function! Git_commit(filename, comment)
 	endif 
 endfunction 
 
+
+
 function! Git_check_in_repository(filepath)
 	let tmp = system("(cd " . a:filepath .  ";git rev-parse --is-inside-work-tree 2>/dev/null) | tr -d '\r' | tr -d '\n'")
 	if tmp =~  "true"
