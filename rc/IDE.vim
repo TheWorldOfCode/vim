@@ -227,11 +227,6 @@ Plug 'gilsondev/searchtasks.vim' " Search for TODO when developing
 Plug 'scrooloose/nerdtree' " NERDtree is a file system explorer
 autocmd VimEnter,TabEnter * :NERDTree 
 
-Plug 'taketwo/vim-ros' " Ros Plugin 
-set shiftwidth=2  " Two space indents
-set tabstop=2     " Tab key indents two spaces at a time
-set expandtab     " Use spaces when the <Tab> key is pressed
-set cindent       " Turn on automatic C-code indentation
 
 
 "Extension for syntax
@@ -257,4 +252,10 @@ nmap <silent> <C-k> :tabnext <CR>
 
 " Source Status line
 source ~/.vim/statusline.vim
+
+" ROS settings
+set shiftwidth=2  " Two space indents
+set tabstop=2     " Tab key indents two spaces at a time
+set expandtab     " Use spaces when the <Tab> key is pressed
+set cindent       " Turn on automatic C-code indentation
 

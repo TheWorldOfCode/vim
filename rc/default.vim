@@ -26,7 +26,7 @@ set ruler		" show the cursor position all the time
 set showcmd		" display incomplete commands
 
 set ttimeout		" time out for key codes
-set ttimeoutlen=100	" wait up to 100ms after Esc for special key
+set ttimeoutlen=50	" wait up to 50ms after Esc for special key
 
 set display=truncate    " Show @@@ in the last line if it is truncated.
 
@@ -59,9 +59,9 @@ let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
 let g:ycm_autoclose_preview_window_after_completion=1
 map<leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
 let g:ycm_global_ycm_extra_conf = '~/.vim/plugged/YouCompleteMe/third_party/ycmd/.ycm_extra_conf.py'
-let g:ycm_server_python_interpreter = '/usr/bin/python2'
+let g:ycm_server_python_interpreter = '/usr/bin/python3'
 
-Plug 'rhysd/vim-grammarous'
+Plug 'rhysd/vim-grammarous', {'for': 'tex'}
 
 Plug 'habamax/vim-sendtoterm' " Allow to send lines to terminal 
 
@@ -72,6 +72,7 @@ let g:markdown_minlines = 100
 
 Plug 'vim-scripts/SyntaxRange'
 
+" Allow creating tabels 
 Plug 'godlygeek/tabular'
 
 "Extension for syntax
@@ -84,35 +85,6 @@ Plug 'Townk/vim-autoclose'
 Plug 'haya14busa/vim-gtrans'
 call plug#end()
 
-colorscheme happy_hacking
-
-" When started as "evim", evim.vim will already have done these settings.
-if v:progname =~? "evim"
-	finish
-endif
-
-" Get the defaults that most users want.
-
-" The default vimrc file.
-"
-" Maintainer:	Bram Moolenaar <Bram@vim.org>
-" Last change:	2017 Jun 13
-"
-" This is loaded if no vimrc file was found.
-" Except when Vim is run with "-u NONE" or "-C".
-" Individual settings can be reverted with ":set option&".
-" Other commands can be reverted as mentioned below.
-
-" When started as "evim", evim.vim will already have done these settings.
-if v:progname =~? "evim"
-	finish
-endif
-
-" Bail out if something that ran earlier, e.g. a system wide vimrc, does not
-" want Vim to use these default values.
-if exists('skip_defaults_vim')
-	finish
-endif
 
 " Use Vim settings, rather than Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
@@ -135,11 +107,6 @@ endif
 " Do not recognize octal numbers for Ctrl-A and Ctrl-X, most users find it
 " confusing.
 set nrformats-=octal
-
-" For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries.
-if has('win32')
-	set guioptions-=t
-endif
 
 " Don't use Ex mode, use Q for formatting.
 " Revert with ":unmap Q".
@@ -245,7 +212,7 @@ endif " has("autocmd")
 " loaded during initialization.
 if has('syntax') && has('eval')
 	packadd! matchit
-endif
+endif 
 
 au BufNewFile, BufRead *.py,*.c,*.h, *.cpp
 			\ set tabstop=4
@@ -260,11 +227,7 @@ au BufNewFile, BufRead *.py,*.c,*.h, *.cpp
 highlight BadWhitespace ctermfg=0 ctermbg=226
 au BufNewFile,BufRead *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 
-" Source vim scripts
-source ~/.vim/functions/vim_setting.vim 
 
-
-au BufEnter <buffer> call Vim_setting_set_in_file()
 " Tab control
 nmap <silent> <C-j> :tabprevious <CR>
 nmap <silent> <C-k> :tabnext <CR>
@@ -288,3 +251,15 @@ let g:vimtex_compiler_latexmk = {
                         \   '--bibtex',
 			\ ],
 			\}
+
+" Fixing Keys
+if &term  == "st-256color"
+	" Left 
+	imap <ESC>OD <ESC>hi
+	" Right 
+	imap <ESC>OC <ESC>lli
+	" Up 
+	imap <ESC>OA <ESC>ki
+	" Down 
+	imap <ESC>OB <ESC>ji
+endif 
