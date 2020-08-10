@@ -1,5 +1,5 @@
 command! GitAdd call Git_add(expand('%:p'))
-command! -nargs=1 GitCommit call Git_comment(expand('%:p'), <args> )
+command! -nargs=1 GitCommit call Git_commit(expand('%:p'), <args> )
 
 function! Git_add(filename)
 " Add the file to git
@@ -12,8 +12,9 @@ endfunction
 
 function! Git_commit(filename, comment)
 " Comment a file 
+	echom a:filename . "  " . a:comment
 	if exists("b:GitInRepository") && b:GitInRepository == 1
-		let l:result = system("git commit " . a:filename . " -m " . a:comment)
+		let l:result = system("git commit " . a:filename . " -m '" . a:comment . "' >/dev/null")
 	endif 
 endfunction 
 
