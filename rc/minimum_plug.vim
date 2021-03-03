@@ -53,15 +53,6 @@ let g:UltiSnipsSnippetDirectories = ["mysnippets"]
 
 Plug 'vim-scripts/indentpython.vim'
 
-"Deoplete asynchronous completion framework for neovim/vim8
-if has('nvim')
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-    Plug 'Shougo/deoplete.nvim'
-    Plug 'roxma/nvim-yarp'
-    Plug 'roxma/vim-hug-neovim-rpc'
-endif
-let g:deoplete#enable_at_startup = 1
 
 Plug 'dense-analysis/ale'
 "
@@ -84,15 +75,8 @@ Plug 'Shougo/denite.nvim'
 call plug#end()
 
 " Use ALE and also some plugin 'foobar' as completion sources for all code.
-call deoplete#custom#option('sources', {
- \ '_': ['ale'],
- \})
 
-try
-    colorscheme darkglass
-catch /^Vim\%((\a\+)\)\=:E185/
-    " deal with it
-endtry
+colorscheme darkglass
 
     " Use Vim settings, rather than Vi settings (much better!).
     " This must be first, because it changes other options as a side effect.
