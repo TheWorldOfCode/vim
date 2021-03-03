@@ -44,7 +44,7 @@ function! Git_popup_leaving(id, quit)
         let s:id = a:id
         if b:GitFileTracked == "M" || b:GitFileTracked == "U"
             if s:id == 0
-                if b:GitFileTracked == 0
+                if b:GitFileTracked == "U" 
                     call popup_dialog(expand('%:p').' is untracked, would you track this file (y/n)?', #{
                                 \ title: 'Git Warring',
                                 \ filter: 'popup_filter_yesno',
@@ -312,9 +312,7 @@ function! s:Git_save(all)
         w
         call Git_popup_leaving(0, 1)
     endif
-    echo "Hallo"
 endfunction
-
 
 "cmap <silent> q<CR> :call Git_popup_leaving(0, 1)<CR>
 "cmap <silent> qa<CR> :call Git_popup_leave_all(1)<CR>
