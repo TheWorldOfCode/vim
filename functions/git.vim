@@ -119,7 +119,7 @@ function! Git_popup_leave_all_callback_recall(id, result)
         call s:Git_popup_leave_all_create_popup(s:all_list)
     else
         if s:quit == 1
-            quit
+            quitall
         endif
     endif
 endfunction
@@ -128,12 +128,10 @@ let s:all_list = []
 function! Git_popup_leave_all_callback(id, result)
     let l:element = s:all_list[a:result - 1]
     if a:result == len(s:all_list) 
-        echo "Quit"
         if s:quit == 1
-            quit
+            quitall
         endif
     elseif a:result == len(s:all_list) - 1
-        echo "Commit on All"
         if s:all_marked_nr == 0
             call Git_popup_git_commit(s:all_list[0:len(s:all_list)-3], "Git commit", "Git_popup_leave_all_callback_recall")
             let s:all_list = []
@@ -160,7 +158,6 @@ let s:all_marked_nr = 0
 function! Git_popup_leave_all_filter(id, key)
 
     if a:key == 'm' || a:key == 's'
-        echo "mark"
         let bufnr = winbufnr(a:id)
         let line = getbufline(bufnr, line(".", a:id))[0]
 
@@ -187,6 +184,7 @@ endfunction
 function! s:Git_popup_leave_all_create_popup(list)
     let s:all_list = a:list
     call popup_menu(a:list, #{
+                \ title: 'Git Warring',
                 \ filter: 'Git_popup_leave_all_filter',
                 \ callback: 'Git_popup_leave_all_callback'
                 \} )
@@ -215,7 +213,7 @@ function! Git_popup_leave_all(quit)
         call s:Git_popup_leave_all_create_popup(l:list)
     else
         if s:quit == 1
-            quit
+            quitall
         endif
     endif
 endfunction
@@ -297,11 +295,13 @@ function! Git_statusline_file_tracked()
     return ''
 endfunction
 
-
 augroup GIT_STATUS
     au BufRead * : let b:GitInRepository=Git_check_in_repository(expand('%:p:h'))
     au BufRead * : let b:GitCurrentBranch=Git_get_current_branch() 
     au BufRead * : let b:GitFileTracked=Git_check_if_file_is_tracked(expand('%:p'))
+    au BufWritePost * : let b:GitInRepository=Git_check_in_repository(expand('%:p:h'))
+    au BufWritePost * : let b:GitCurrentBranch=Git_get_current_branch() 
+    au BufWritePost * : let b:GitFileTracked=Git_check_if_file_is_tracked(expand('%:p'))
 augroup end 
 
 function! s:Git_save(all)
