@@ -23,7 +23,7 @@ def math():
 endglobal
 
 
-snippet \beg "begin{} / end{}"  bA
+snippet \beg "begin{} / end{}"  b
 \begin{$1}
    $2
 \end{$1}
@@ -110,6 +110,7 @@ snippet template_defualt "Defualt latex doc"
 $1
 \end{document}
 endsnippet
+
 snippet notes "preamble of notes in LaTeX" b
 \usepackage{import}
 \usepackage{pdfpages}
@@ -124,12 +125,22 @@ snippet notes "preamble of notes in LaTeX" b
 endsnippet
 
 priority 10
-snippet md "Math display mode" bA
+snippet "amd" "Math align" brA
+\begin{equation}
+	\begin{split}
+		$1 & $2 \\\\
+	\end{split}
+\end{equation}
+$0
+endsnippet
+
+priority 5
+snippet "md" "Math display mode" brA
 \[$0\]
 endsnippet
 
 priority 0
-snippet md "Math inline" wA
+snippet "md" "Math inline" wrA
 $$1$ $0
 endsnippet
 
@@ -149,18 +160,26 @@ snippet " "" iA
 \`\`$1'' $0
 endsnippet
 
+priority 10
+context "math()"
+snippet bf "Bold math" wA
+\pmb{$1} $0 
+endsnippet
+priority 0
+
 snippet bf "Bold" wA
 \textbf{$1} $0 
 endsnippet
 
+
 priority 10
 snippet txtit "Italic" wA
-\textit{$1}$0
+\textit{ $1 } $0
 endsnippet
 
 priority 0
 snippet txtit "Italic visual" A
-\textit{${VISUAL}} $0
+\textit\{${VISUAL}\} $0
 endsnippet
 
 
@@ -192,18 +211,38 @@ snippet ( "()" iA
 \left($1 \right)$0
 endsnippet
 
-#context "math()"
-#snippet { "{}" iA
-#\left{$1 \right}$0
-#endsnippet
 
 context "math()"
 snippet [ "" iA
 \left[$1 \right] $0
 endsnippet
 
+context "math()"
+snippet list "list" iA
+\left\\{$1 \right\\} $0
+endsnippet
 
 priority 0
+
+context "math()"
+snippet '\s[<][<]\s' "must less then" wrA
+ \ll $0
+endsnippet
+context "math()"
+snippet '\s[<][<][<]\s' "must less then" wrA
+ \lll $0
+endsnippet
+
+context "math()"
+snippet '\s[>][>]\s' "must less then" wrA
+ \gg $0
+endsnippet
+context "math()"
+
+snippet '\s[>][>][>]\s' "must less then" wrA
+ \ggg $0
+endsnippet
+
 context "math()"
 snippet '\s[<][=]\s' "less or equation to" wrA
  \leq $0
@@ -224,18 +263,18 @@ snippet '\s[=][>]\s' "=>" wrA
 \Rightarrow $0
 endsnippet
 
-snippet '\s[<][=][>]\s' "RightLeftArrow" wrA
-\Rightleftarrow $0
+snippet '\s[<][=][>]\s' "LeftRightArrow" wrA
+\Leftrightarrow$0
 endsnippet
 
 context "math()"
 snippet or "eller" wA
-\vee
+\vee$0
 endsnippet
 
 context "math()" 
 snippet and "og" wA
-\wedge
+\wedge$0
 endsnippet
 
 context "math()" 
@@ -269,22 +308,22 @@ endsnippet
 
 context "math()"
 snippet cd "dots as productoin" wA
-\cdot
+\cdot$0
 endsnippet
 
 context "math()"
 snippet tms "times" wA 
-\times $0
+\times$0
 endsnippet
 
 context "math()" 
 snippet oplus "The math symbol oplus" wA
-\oplus $0
+\oplus$0
 endsnippet
 
 context "math()"
 snippet sqrt "Sqrt" wA
-\sqrt{$1}$0
+\sqrt{ $1 }$0
 endsnippet
 
 context "math()"
@@ -296,57 +335,66 @@ endsnippet
 context "math()"
 priority 0
 snippet sb "subscript" iA
-_$0
+_{ $1 }$0
 endsnippet
 
 context "math()"
+snippet array "array" w
+\\{ $1 \\}$0
+endsnippet 
+context "math()"
 snippet sr "superscript" iA
-^$0
+^\{$1\}$0
 endsnippet
 
 context "math()"
 snippet sum "sum" wA
-\sum_{$1}^{$2}$0
+\sum_{ $1 }^{ $2 }$0
+endsnippet
+
+context "math()"
+snippet prod "product" wA
+\prod_{ $1 }^{ $2 }$0
 endsnippet
 
 context "math()"
 snippet overset "overset" wA
-\overset{$1}{$2}$0
+\overset{ $1 }{ $2 }$0
 endsnippet
 
 context "math()"
 snippet underset "underset" wA
-\underset{$1}$0
+\underset{ $1 }{ $2 }$0
 endsnippet
 
 context "math()"
 snippet sideset "sideset" wA
-\sideset{$1}{$2}$0
+\sideset{ $1 }{ $2 }$0
 endsnippet
 
 context "math()"
 snippet underbrace "underbrace" wA
-\underbrace{$1}$0
+\underbrace{ $1 }$0
 endsnippet
 
 context "math()"
 snippet overbrace "overbrace" wA
-\overbrace{$1}$0
+\overbrace{ $1 }$0
 endsnippet
 
 context "math()"
 snippet hat "hat" wA
-\hat{$1}$0
+\hat{ $1 }$0
 endsnippet
 
 context "math()"
 snippet bar "bar" wA
-\bar{$1}$0
+\bar{ $1 }$0
 endsnippet
 
 context "math()"
 snippet vector "vector sign" wA
-\overset{\rightharpoonup}{$1}$0
+\overset{\rightharpoonup}{ $1 }$0
 endsnippet
 
 context "math()"
@@ -355,18 +403,23 @@ snippet '\w+^(\w\w+)\s' "superscript2" irA
 endsnippet
 
 context "math()"
-snippet text "Write normale text in math" wA
-\text{$1}$0
+snippet '\w+_(\w\w+)\s' "subscript2" irA
+_{`!p snip.rv = match.group(1)`} $0
 endsnippet
 
 context "math()"
-snippet infty "Make the infty symbol in math" wA
+snippet ' (text)' "Write normale text in math" wrA
+\text{ $1 } $0
+endsnippet
+
+context "math()"
+snippet ' (infty)' "Make the infty symbol in math" wrA
 \infty $0
 endsnippet
 
 context "math()"
 snippet partial "partial" wA
-\partial $0
+\partial$0
 endsnippet
 
 context "math()"
@@ -380,6 +433,11 @@ snippet sigma "Math symbol for sigma" wA
 endsnippet
 
 context "math()"
+snippet Sigma "Math symbol for Sigma" wA
+\Sigma$0
+endsnippet
+
+context "math()"
 snippet pi "Math symbol for pi" wA
 \pi$0
 endsnippet
@@ -387,6 +445,11 @@ endsnippet
 context "math()"
 snippet lambda "Math symbol for lambda" wA
 \lambda$0
+endsnippet
+
+context "math()"
+snippet Lambda "Math symbol for Lambda" wA
+\Lambda$0
 endsnippet
 
 context "math()"
@@ -481,45 +544,134 @@ endsnippet
 
 context "math()"
 snippet forall "forall" wA
-\forall
+\forall$0
+endsnippet
+
+context "math()"
+snippet Pi "Pi" wA
+\Pi$0
 endsnippet
 
 context "math()"
 snippet exists "exists" wA
-\exists
+\exists$0
 endsnippet
 
 context "math()"
 snippet subset "The symbol for subsets" wA
-\subset $0
+\subset$0
 endsnippet
 
 context "math()" 
 snippet supset "The symbol for superset" wA
-\supset $0
+\supset$0
 endsnippet
 
 context "math()"
 snippet cap "cap" wA
-\cap
+\cap$0
 endsnippet
 
 context "math()"
 snippet cup "cup" wA
-\cup
+\cup$0
 endsnippet
 
 context "math()"
 snippet sim "sim" wA
- \sim $0
+\sim$0
 endsnippet
 
 context "math()" 
 snippet mrm "math style rm" wA
-\mathrm{$1}$0
+\mathrm{ $1 }$0
 endsnippet
 
 context "math()"
 snippet mcal "math style cal" wA
-\mathcal{$1}$0
+\mathcal{ $1 } $0
+endsnippet
+
+context "math()"
+snippet matrix "math matrix" wA
+\begin{bmatrix} $1 \end{bmatrix} $0
+endsnippet
+
+context "math()"
+snippet "smatrix" "math matrix split with dot line" wrA
+\begin{array}{$3}
+	$1 \\\\
+	\addlinespace
+	\hdashline[2pt/2pt]
+	\addlinespace
+	$2
+\end{array} $0
+endsnippet
+
+context "math()"
+snippet ... "dots" wA
+\ldots
+endsnippet
+
+context "math()"
+snippet defeq "Define equal" wA
+\overset{ \text{def} }{ = } $0
+endsnippet
+
+context "math()"
+snippet Defeq "Define equal" wA
+\overset{ \Delta }{ = } $0
+endsnippet
+
+context "math()"
+snippet noteq "not equal" wA
+\neq$0
+endsnippet
+
+context "math()"
+snippet approx "Approximately" wA
+\approx$0
+endsnippet
+
+context "math()"
+snippet decision "decision" wA
+\overset{ $1 }{ \underset{ $2 }{ \gtrless}} $0 
+endsnippet
+
+context "math()"
+snippet cases "Case" wA
+\begin{cases}
+$1
+\end{cases}
+$0
+endsnippet
+
+context "math()"
+snippet det "determinate" wA
+\det{$1}$0
+endsnippet
+
+context "math()"
+snippet min "minimum" wA
+\underset{$1}{\min}{$2}$0
+endsnippet
+
+context "math()"
+snippet max "maximum" wA
+\underset{$1}{\max}{$2}$0
+endsnippet
+
+context "math()"
+snippet cos "cosine" wA
+\cos{$1}$0
+endsnippet
+
+context "math()"
+snippet sin "sin" wA
+\sin{$1}$0
+endsnippet
+
+context "math()"
+snippet tan "tangent" wA
+\tan{$1}$0
 endsnippet
