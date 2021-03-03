@@ -88,153 +88,157 @@ call deoplete#custom#option('sources', {
  \ '_': ['ale'],
  \})
 
-colorscheme darkglass
+try
+    colorscheme darkglass
+catch /^Vim\%((\a\+)\)\=:E185/
+    " deal with it
+endtry
 
-" Use Vim settings, rather than Vi settings (much better!).
-" This must be first, because it changes other options as a side effect.
-" Avoid side effects when it was already reset.
-set nocompatible
+    " Use Vim settings, rather than Vi settings (much better!).
+    " This must be first, because it changes other options as a side effect.
+    " Avoid side effects when it was already reset.
+    set nocompatible
 
-set incsearch
-" Do not recognize octal numbers for Ctrl-A and Ctrl-X, most users find it
-" confusing.
-set nrformats-=octal
+    set incsearch
+    " Do not recognize octal numbers for Ctrl-A and Ctrl-X, most users find it
+    " confusing.
+    set nrformats-=octal
 
-" Don't use Ex mode, use Q for formatting.
-" Revert with ":unmap Q".
-map Q gq
+    " Don't use Ex mode, use Q for formatting.
+    " Revert with ":unmap Q".
+    map Q gq
 
-" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo, so
-" that you can undo CTRL-U after inserting a line break.
-" Revert with ":iunmap <C-U>".
-inoremap <C-U> <C-G>u<C-U>
+    " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo, so
+    " that you can undo CTRL-U after inserting a line break.
+    " Revert with ":iunmap <C-U>".
+    inoremap <C-U> <C-G>u<C-U>
 
-" Switch syntax highlighting on when the terminal has colors or when using the
-" GUI (which always has colors).
-if &t_Co > 2 || has("gui_running")
-    " Revert with ":syntax off".
-    syntax on
+    " Switch syntax highlighting on when the terminal has colors or when using the
+    " GUI (which always has colors).
+    if &t_Co > 2 || has("gui_running")
+        " Revert with ":syntax off".
+        syntax on
 
-    " I like highlighting strings inside C comments.
-    " Revert with ":unlet c_comment_strings".
-    let c_comment_strings=1
-endif
-
-" Only do this part when compiled with support for autocommands.
-if has("autocmd")
-
-    " Enable file type detection.
-    " Use the default filetype settings, so that mail gets 'tw' set to 72,
-    " 'cindent' is on in C files, etc.
-    " Also load indent files, to automatically do language-dependent indenting.
-    " Revert with ":filetype off".
-    filetype plugin indent on
-
-    " Put these in an autocmd group, so that you can revert them with:
-    " ":augroup vimStartup | au! | augroup END"
-    augroup vimStartup
-        au!
-
-        " When editing a file, always jump to the last known cursor position.
-        " Don't do it when the position is invalid, when inside an event handler
-        " (happens when dropping a file on gvim) and for a commit message (it's
-        " likely a different one than last time).
-        autocmd BufReadPost *
-                    \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
-                    \ |   exe "normal! g`\""
-                    \ | endif
-
-    augroup END
-
-endif " has("autocmd")
-
-" Convenient command to see the difference between the current buffer and the
-" file it was loaded from, thus the changes you made.
-" Only define it when not defined already.
-" Revert with: ":delcommand DiffOrig".
-if !exists(":DiffOrig")
-    command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
-                \ | wincmd p | diffthis
-endif
-
-if has('langmap') && exists('+langremap')
-    " Prevent that the langmap option applies to characters that result from a
-    " mapping.  If set (default), this may break plugins (but it's backward
-    " compatible).
-    set nolangremap
-endif
-" Defaults setting done
-if has("vms")
-    set nobackup		" do not keep a backup file, use versions instead
-else
-    set backup		" keep a backup file (restore to previous version)
-    if has('persistent_undo')
-        set undofile	" keep an undo file (undo changes after closing)
+        " I like highlighting strings inside C comments.
+        " Revert with ":unlet c_comment_strings".
+        let c_comment_strings=1
     endif
-endif
 
-if &t_Co > 2 || has("gui_running")
-    " Switch on highlighting the last used search pattern.
-    set hlsearch
-endif
+    " Only do this part when compiled with support for autocommands.
+    if has("autocmd")
 
-" Only do this part when compiled with support for autocommands.
-if has("autocmd")
+        " Enable file type detection.
+        " Use the default filetype settings, so that mail gets 'tw' set to 72,
+        " 'cindent' is on in C files, etc.
+        " Also load indent files, to automatically do language-dependent indenting.
+        " Revert with ":filetype off".
+        filetype plugin indent on
 
-    " Put these in an autocmd group, so that we can delete them easily.
-    augroup vimrcEx
-        au!
+        " Put these in an autocmd group, so that you can revert them with:
+        " ":augroup vimStartup | au! | augroup END"
+        augroup vimStartup
+            au!
 
-        " For all text files set 'textwidth' to 78 characters.
-        autocmd FileType text setlocal textwidth=78
+            " When editing a file, always jump to the last known cursor position.
+            " Don't do it when the position is invalid, when inside an event handler
+            " (happens when dropping a file on gvim) and for a commit message (it's
+            " likely a different one than last time).
+            autocmd BufReadPost *
+                        \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+                        \ |   exe "normal! g`\""
+                        \ | endif
 
-    augroup END
+        augroup END
 
-else
+    endif " has("autocmd")
 
-    set autoindent		" always set autoindenting on
+    " Convenient command to see the difference between the current buffer and the
+    " file it was loaded from, thus the changes you made.
+    " Only define it when not defined already.
+    " Revert with: ":delcommand DiffOrig".
+    if !exists(":DiffOrig")
+        command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
+                    \ | wincmd p | diffthis
+    endif
 
-endif " has("autocmd")
+    if has('langmap') && exists('+langremap')
+        " Prevent that the langmap option applies to characters that result from a
+        " mapping.  If set (default), this may break plugins (but it's backward
+        " compatible).
+        set nolangremap
+    endif
+    " Defaults setting done
+    if has("vms")
+        set nobackup		" do not keep a backup file, use versions instead
+    else
+        set backup		" keep a backup file (restore to previous version)
+        if has('persistent_undo')
+            set undofile	" keep an undo file (undo changes after closing)
+        endif
+    endif
 
-" Add optional packages.
-"
-" The matchit plugin makes the % command work better, but it is not backwards
-" compatible.
-" The ! means the package won't be loaded right away but when plugins are
-" loaded during initialization.
-if has('syntax') && has('eval')
-    packadd! matchit
-endif 
+    if &t_Co > 2 || has("gui_running")
+        " Switch on highlighting the last used search pattern.
+        set hlsearch
+    endif
 
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
-"set textwidth=79
-set expandtab
-set autoindent
-set fileformat=unix
+    " Only do this part when compiled with support for autocommands.
+    if has("autocmd")
 
-highlight BadWhitespace ctermfg=0 ctermbg=226
-au BufNewFile,BufRead *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+        " Put these in an autocmd group, so that we can delete them easily.
+        augroup vimrcEx
+            au!
+
+            " For all text files set 'textwidth' to 78 characters.
+            autocmd FileType text setlocal textwidth=78
+
+        augroup END
+
+    else
+
+        set autoindent		" always set autoindenting on
+
+    endif " has("autocmd")
+
+    " Add optional packages.
+    "
+    " The matchit plugin makes the % command work better, but it is not backwards
+    " compatible.
+    " The ! means the package won't be loaded right away but when plugins are
+    " loaded during initialization.
+    if has('syntax') && has('eval')
+        packadd! matchit
+    endif 
+
+    set tabstop=4
+    set softtabstop=4
+    set shiftwidth=4
+    "set textwidth=79
+    set expandtab
+    set autoindent
+    set fileformat=unix
+
+    highlight BadWhitespace ctermfg=0 ctermbg=226
+    au BufNewFile,BufRead *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 
 
-" Tab control
-nmap <silent> <C-j> :tabprevious <CR>
-nmap <silent> <C-k> :tabnext <CR>
+    " Tab control
+    nmap <silent> <C-j> :tabprevious <CR>
+    nmap <silent> <C-k> :tabnext <CR>
 
-" Source Status line
-source ~/.vim/statusline.vim
+    " Source Status line
+    source ~/.vim/statusline.vim
 
-" Fixing Keys
-if &term  == "st-256color"
-    " Left 
-    imap <ESC>OD <ESC>hi
-    " Right 
-    imap <ESC>OC <ESC>lli
-    " Up 
-    imap <ESC>OA <ESC>ki
-    " Down 
-    imap <ESC>OB <ESC>ji
-endif 
+    " Fixing Keys
+    if &term  == "st-256color"
+        " Left 
+        imap <ESC>OD <ESC>hi
+        " Right 
+        imap <ESC>OC <ESC>lli
+        " Up 
+        imap <ESC>OA <ESC>ki
+        " Down 
+        imap <ESC>OB <ESC>ji
+    endif 
 
 
