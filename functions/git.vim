@@ -1,5 +1,21 @@
+" Git integration into vim. 
+" Version 0.1
+" Current version: 
+"       GitAdd - Capable of adding file in git
+"       GitCommit - Add a comment to a file
+"       GitAddCommit - Add file and comment on it 
+"       GitCommitAll - Comment on all open windows 
+"       GitQuit - Popup ask if want to add and comment
+"       GitQuitAll - Popup ask if want to add and comment on all windows
+"       GitSaveQuit - Same as GitQuit, just save the buffer first
+"       GitSaveQuitAll - Same as GitQuitAll, but just saving the buffer first.
+"
+" Future:
+"       Modify the different version of GitQuitAll in use all buffers instead of only windows
+
 command! GitAdd call Git_add(expand('%:p'))
 command! -nargs=1 GitCommit call Git_commit(expand('%:p'), <args> )
+command! -nargs=1 GitAddCommit call Git_add_commit(expand('%:p'), <args>)
 command! GitCommitAll call Git_popup_leave_all(0)
 
 command! GitQuit        call Git_popup_leaving(0,1)
@@ -236,6 +252,10 @@ function! Git_commit(filename, comment)
     endif 
 endfunction 
 
+function! Git_add_commit(filename, comment)
+    call Git_add(a:filename)
+    call Git_commit(a:filename, a:comment)
+endfunction
 
 
 function! Git_check_in_repository(filepath)
