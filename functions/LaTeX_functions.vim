@@ -1,3 +1,4 @@
+command! -nargs=1 SetupSlides call SetupSlides(<args>)
 
 function! SnapShot(dir, filename)
 	let file=a:dir . a:filename . ".png"
@@ -38,8 +39,7 @@ endfunction
 
 
 function! SetupSlides(slides)
-
-        let l:number = system('pdfinfo ' . a:slides .  ' | grep Pages: | grep -Eo "[0-9]+"')
+    let l:number = system('pdfinfo ' . a:slides .  ' 2>/dev/null | grep Pages: | grep -Eo "[0-9]+"')
 
 	let i=1
 

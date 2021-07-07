@@ -41,6 +41,7 @@ set complete+=kspell
 
 set exrc
 
+
 " My own adding 
 call plug#begin('~/.vim/plugged')
 Plug 'flazz/vim-colorschemes'
@@ -154,6 +155,13 @@ let g:vimwiki_list = [{'path': '~/vimwiki/',
 " R Studio
 Plug 'jalvesaq/Nvim-R'
 
+" Jupyter notebook requires notedown pip install notedown
+Plug 'szymonmaszke/vimpyter' 
+
+let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
+Plug 'puremourning/vimspector'
+let g:vimspector_base_dir=expand( '$HOME/.vim/vimspector-config' )
+
 call plug#end()
 
 " Use ALE and also some plugin 'foobar' as completion sources for all code.
@@ -161,7 +169,12 @@ call deoplete#custom#option('sources', {
  \ '_': ['ale'],
  \})
 
-colorscheme darkglass
+"colorscheme darkglass
+colorscheme  landscape
+
+command! DefaultColors : colorscheme landscape
+command! LightColors : colorscheme lightning
+
 
 " Use Vim settings, rather than Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
@@ -236,6 +249,7 @@ if has('langmap') && exists('+langremap')
     " compatible).
     set nolangremap
 endif
+
 " Defaults setting done
 if has("vms")
     set nobackup		" do not keep a backup file, use versions instead
@@ -246,38 +260,18 @@ else
     endif
 endif
 
-if &t_Co > 2 || has("gui_running")
-    " Switch on highlighting the last used search pattern.
-    set hlsearch
-endif
+" Switch on highlighting the last used search pattern.
+set hlsearch
 
-" Only do this part when compiled with support for autocommands.
-if has("autocmd")
+augroup vimrcEx
+    au!
+    " For all text files set 'textwidth' to 78 characters.
+    autocmd FileType text setlocal textwidth=78
+augroup END
 
-    " Put these in an autocmd group, so that we can delete them easily.
-    augroup vimrcEx
-        au!
-
-        " For all text files set 'textwidth' to 78 characters.
-        autocmd FileType text setlocal textwidth=78
-
-    augroup END
-
-else
-
-    set autoindent		" always set autoindenting on
-
-endif " has("autocmd")
-
-" Add optional packages.
-"
 " The matchit plugin makes the % command work better, but it is not backwards
 " compatible.
-" The ! means the package won't be loaded right away but when plugins are
-" loaded during initialization.
-if has('syntax') && has('eval')
-    packadd! matchit
-endif 
+packadd! matchit
 
 set tabstop=4
 set softtabstop=4
@@ -297,6 +291,7 @@ nmap <silent> <C-k> :tabnext <CR>
 
 " Source Status line
 source ~/.vim/statusline.vim
+source ~/.vim/functions/program.vim
 
 " Fixing Keys
 if &term  == "st-256color"
@@ -310,4 +305,5 @@ if &term  == "st-256color"
     imap <ESC>OB <ESC>ji
 endif 
 
-
+" Launch programs
+command -nargs=1 -complete=file -bar Zathura  !zathura '<args>' &
