@@ -8,6 +8,16 @@ function! Local_sourced()
     return ''
     
 endfunction
+
+function! Project_name()
+    if exists("b:project_name")
+        return "  Project: " . b:project_name
+    elseif exists("g:project_name")
+        return "  Project: " . g:project_name
+    endif
+
+    return ''
+endfunction
 " Creating my own status line
 set statusline =  
 
@@ -19,6 +29,7 @@ set statusline+=%r "Read only flag.
 set statusline+=%h "help buffer flag.
 set statusline+=%w "Preview window flag
 set statusline+=%y "Type of file
+set statusline+=%{Project_name()}
 set statusline+=%= "Moving the cursor the the other side
 set statusline+=\ %{Local_sourced()} 
 set statusline+=\ Buf:%n "buffer number

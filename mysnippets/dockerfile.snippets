@@ -1,0 +1,44 @@
+
+snippet ubuntu "Create a ubuntu based image" bA
+FROM ubuntu:${1:latest}
+
+ENV DEBIAN_FRONTED noninteractive
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
+$0
+endsnippet
+
+snippet timezone "Set the timezone" bA
+# Setting timezone 
+ENV TZ=${1:Europe/Copenhagen}
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+$0
+endsnippet
+
+snippet verpy "Set the version of python" bA
+RUN ln -s /usr/bin/python${1:3} /usr/bin/python
+$0
+endsnippet
+
+snippet header "A header for the image" bA
+LABEL maintainer $1
+LABEL version $2
+$0
+endsnippet
+
+snippet aptinstall "Install packages with apt" bA
+RUN apt update && apt install -y $1 \
+			   && rm -rf /var/lib/apt/lists/*
+$0
+endsnippet
+
+snippet pipinstall "Install packages with pip" bA
+RUN ${1:python} -m pip install $2
+$0
+endsnippet
+
+snippet entrypoint "entrypoint" bA
+ADD /${1:init}
+CMD ["${3:args}"]
+ENTRYPOINT ["$2"]
+endsnippet

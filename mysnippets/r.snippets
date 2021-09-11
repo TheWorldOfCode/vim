@@ -1,0 +1,32 @@
+snippet defaultlib 
+library(ggplot2)
+library(tidyverse)
+library(rstatix)
+library(ggpubr)
+endsnippet
+
+snippet pythonlib
+library(reticulate)
+endsnippet
+
+snippet readcsv 
+$1 <- as.data.frame(read.table("${2:data}", header=${3:FALSE}, sep="${4:,}"))
+$0
+endsnippet
+
+snippet ttestpair
+stat <- ${1:df} %>% pairwise_t_test(${2:values} ~ ${3:groups}, p.adjust.method="${4:bonferroni}")
+$0
+endsnippet
+
+snippet statbox
+${1:stat} <- ${2:stat} %>% add_xy_position(x="${3:groups}", step.increase = ${4:step})
+df %>% 
+    ggplot() +
+    aes(x = factor(unlist(${3:groups}))) +
+    aes(y = ${5:value}) + 
+    geom_boxplot() +
+    stat_pvalue_manual(${1:stat}, label="p.adj") +
+    labs(title="${6:Title}", x="${7:Method}", y="${8:value}")
+$0
+endsnippet
