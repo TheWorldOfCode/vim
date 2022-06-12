@@ -133,7 +133,7 @@ set hlsearch
 augroup vimrcEx
     au!
     " For all text files set 'textwidth' to 78 characters.
-    autocmd FileType text setlocal textwidth=78
+   autocmd FileType text setlocal textwidth=78
 augroup END
 
 " The matchit plugin makes the % command work better, but it is not backwards
@@ -143,13 +143,16 @@ packadd! matchit
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
-"set textwidth=79
+
 set expandtab
 set autoindent
 set fileformat=unix
 
 highlight BadWhitespace ctermfg=0 ctermbg=226
 au BufNewFile,BufRead *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+
+" Extra filedetection
+au BufNewFile,BufRead *.csv set filetype=csv
 
 
 " Tab control
@@ -321,6 +324,14 @@ unlet check
 if has_key(environ(), "ROS_VERSION") == 1
     Plug 'taketwo/vim-ros'
 endif
+
+if has_key(environ(), "ARDUINO_VERSION") == 1
+    Plug 'stevearc/vim-arduino'
+endif
+
+Plug 'xarthurx/taskwarrior.vim'
+
+Plug 'vim-scripts/DoxyGen-Syntax'
 
 call plug#end()
 

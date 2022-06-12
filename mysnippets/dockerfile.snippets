@@ -42,3 +42,10 @@ ADD /${1:init}
 CMD ["${3:args}"]
 ENTRYPOINT ["$2"]
 endsnippet
+
+snippet user "Create a user" bA
+# Setup user 
+RUN useradd -m ${1:user} -p "$(openssl passwd -1 ${1:user})"; \
+    usermod -aG sudo ${1:user}; \
+    mkdir -p /home/${1:user}
+endsnippet
